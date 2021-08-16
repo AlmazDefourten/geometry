@@ -8,7 +8,7 @@ using System.Diagnostics;
 namespace geometry
 {
     class FunctionParsing
-    {
+    {        
         public string m_functionInput;
         private int startIndex = 0;
         private int endIndex = 0;
@@ -186,11 +186,13 @@ namespace geometry
         }
         public int getY(int x)
         {
-            int bestPriority = getBestPriority(m_functionInput);
-            int y;
-            string perem = m_functionInput;
-            int result = calculation(bestPriority, perem);
-            return result;
+           
+                int bestPriority = getBestPriority(m_functionInput);
+                int y;
+                string perem = m_functionInput;
+                int result = calculation(bestPriority, perem);
+                return result;
+          
         }
     }
 }
