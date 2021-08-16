@@ -22,6 +22,7 @@ namespace geometry
         }
         private int getPriority(char input)
         {
+            //this cool
             if (input == '^') { return 0; }
             else if (input == '(') { return 1; }
             else if (input == '*' || input == '/' || input == '^') { return 2; }
@@ -32,6 +33,7 @@ namespace geometry
 
         public static string ReverseString(string s)
         {
+            //for why7
             char[] arr = s.ToCharArray();
             Array.Reverse(arr);
             return new string(arr);
@@ -95,6 +97,7 @@ namespace geometry
         public int calculation(int bestPriority, string input)
         {
             // надо заменить скобки аргументов ф-й на [ и ] а так же поменять кодовыми буквами sin = s, cos = c и тд
+            ///для чего меня скобки?
             input = input.Insert(0, "q");
             input = input + "q";
             while (bestPriority == 1)
@@ -184,15 +187,22 @@ namespace geometry
             }
             return 0;
         }
-        public int getY(int x)
+
+        int matchDecide()
         {
-           
-                int bestPriority = getBestPriority(m_functionInput);
-                int y;
-                string perem = m_functionInput;
-                int result = calculation(bestPriority, perem);
-                return result;
-          
+            int bestPriority = getBestPriority(m_functionInput);
+            int y;
+            string perem = m_functionInput;
+            int result = calculation(bestPriority, perem);
+            return result;
+        }
+
+        public void getY(int x)
+        {
+            //I don't understand chto делать, т.к. рклизовывать на калькулятор график функции? 
+            matchDecide();
+
+
         }
     }
 }
