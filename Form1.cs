@@ -78,7 +78,7 @@ namespace geometry
             //need to add if I missed
             char T = e.KeyChar;
    
-            if (Char.IsDigit(T) || T == '+' || T == '-' || T == '*' || T == '/' || T == '=' || T == 'c' || T == 'o' || T == 's' || T == 'i' || T == 'n' || e.KeyChar == '\b' || e.KeyChar == Convert.ToChar(","))
+            if (Char.IsDigit(T) || T == '+' || T == '-' || T == '*' || T == '/' || T == '=' || T == 'c' || T == 'o' || T == 's' || T == 'i' || T == 'n' || e.KeyChar == '\b' || e.KeyChar == Convert.ToChar(",") || T == '^' || T == '(' || T == ')')
             {
                
             }
