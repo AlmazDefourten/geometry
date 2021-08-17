@@ -23,9 +23,9 @@ namespace geometry
             {
                 try
                 {
-                    string joji = textBox1.Text;
-                    FunctionParsing koko = new FunctionParsing(joji);
-                    int result = koko.getY(1);
+                    string textBoxInput = textBox1.Text;
+                    FunctionParsing parserObject = new FunctionParsing(textBoxInput);
+                    int result = parserObject.getY(1);
                     MessageBox.Show(result.ToString());
                 }
                 catch (Exception)
