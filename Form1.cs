@@ -25,7 +25,7 @@ namespace geometry
                 {
                     string textBoxInput = textBox1.Text;
                     FunctionParsing parserObject = new FunctionParsing(textBoxInput);
-                    int result = parserObject.getY(1);
+                    double result = parserObject.getY(1);
                     MessageBox.Show(result.ToString());
                 }
                 catch (Exception)
@@ -78,7 +78,7 @@ namespace geometry
             //need to add if I missed
             char T = e.KeyChar;
    
-            if (Char.IsDigit(T) || T == '+' || T == '-' || T == '*' || T == '/' || T == '=' || T == 'c' || T == 'o' || T == 's' || T == 'i' || T == 'n' || e.KeyChar == '\b' || e.KeyChar == Convert.ToChar(",") || T == '^' || T == '(' || T == ')')
+            if (Char.IsDigit(T) || T == '+' || T == '-' || T == '*' || T == '/' || T == '=' || T == 'c' || T == 'o' || T == 's' || T == 'i' || T == 'n' || T == '.' || e.KeyChar == '\b' || e.KeyChar == Convert.ToChar(",") || T == '^' || T == '(' || T == ')')
             {
                
             }

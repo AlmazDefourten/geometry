@@ -116,7 +116,7 @@ namespace geometry
             return operand;
         }
 
-        public int calculation(Priorities bestPriority, string input)
+        public double calculation(Priorities bestPriority, string input)
         {
             // надо заменить скобки аргументов ф-й на [ и ] а так же поменять кодовыми буквами sin = s, cos = c и тд
             ///для чего меня скобки?
@@ -127,7 +127,7 @@ namespace geometry
                 int indexOfFirstBracket = input.LastIndexOf('(');
                 int indexOfSecondBracket = input.IndexOf(")");
                 string newString = input.Substring(indexOfFirstBracket + 1, indexOfSecondBracket - indexOfFirstBracket - 1);
-                int znachenie = calculation(getBestPriority(newString), newString);
+                double znachenie = calculation(getBestPriority(newString), newString);
                 input = input.Remove(indexOfFirstBracket, indexOfSecondBracket - indexOfFirstBracket + 1);
                 input = input.Insert(indexOfFirstBracket, znachenie.ToString());
                 bestPriority = getBestPriority(input);
@@ -164,16 +164,16 @@ namespace geometry
                     {
                         operat = input[i];
                         
-                        int leftOperand = Convert.ToInt32(getLeftOperand(input, i));
-                        int rightOperand = Convert.ToInt32(getRightOperand(input, i));
+                        double leftOperand = Convert.ToDouble(getLeftOperand(input, i));
+                        double rightOperand = Convert.ToDouble(getRightOperand(input, i));
                         if (operat == '*')
                         {
-                            int result = leftOperand * rightOperand;
+                            double result = leftOperand * rightOperand;
                             input = input.Remove(startIndex, endIndex - startIndex + 1);
                             input = input.Insert(startIndex, result.ToString());
                         }
                         else if (operat == '/') {
-                            int result;
+                            double result;
                                 result = leftOperand / rightOperand;
                                 input = input.Remove(startIndex, endIndex - startIndex + 1);
                                 input = input.Insert(startIndex, result.ToString());
@@ -199,17 +199,17 @@ namespace geometry
                         {
                             break;
                         }
-                        int leftOperand = Convert.ToInt32(getLeftOperand(input, i));
-                        int rightOperand = Convert.ToInt32(getRightOperand(input, i));
+                        double leftOperand = Convert.ToDouble(getLeftOperand(input, i));
+                        double rightOperand = Convert.ToDouble(getRightOperand(input, i));
                         if (operat == '+')
                         {
-                            int result = leftOperand + rightOperand;
+                            double result = leftOperand + rightOperand;
                             input = input.Remove(startIndex, endIndex - startIndex + 1);
                             input = input.Insert(startIndex, result.ToString());
                         }
                         else if (operat == '-')
                         {
-                            int result;
+                            double result;
                             result = leftOperand - rightOperand;
                             input = input.Remove(startIndex, endIndex - startIndex + 1);
                             input = input.Insert(startIndex, result.ToString());
@@ -231,20 +231,20 @@ namespace geometry
             {
                 
                 input = input.Replace("q", "");
-                return Convert.ToInt32(input);
+                return Convert.ToDouble(input);
             }
             return 0;
         }
-        int matchDecide()
+        double matchDecide()
         {
             Priorities bestPriority = getBestPriority(m_functionInput);
             int y;
             string perem = m_functionInput;
-            int result = calculation(bestPriority, perem);
+            double result = calculation(bestPriority, perem);
             return result;
         }
 
-        public int getY(int x)
+        public double getY(double x)
         {
             //пока что возвращает просто значение вычислений в дальнейшем будем выдавать решения, работа с неравенствами в другом классе
             //I don't understand chto делать, т.к. рклизовывать на калькулятор график функции? - не трогай просто работай с этим из другого класса где ты рисуешь
