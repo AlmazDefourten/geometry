@@ -12,7 +12,7 @@ namespace geometry
 {
     public partial class mainForm : Form
     {
-
+        //xd
         protected void mainFunction()
         {
             if (textBox1.Text == "")
