@@ -26,19 +26,11 @@ namespace geometry
         }
         public FunctionParsing(string functionInput) { m_functionInput = functionInput; }
 
-        private bool isMinusBinary(ref string input, int indexOfMinus)
-        {
-            if (isNumber(input[indexOfMinus - 1]))
-            {
-                return true;
-            } 
-            return false;
-        }
-
+        
         private static bool isNumber(char input)
         {
             if (input == '0' || input == '1' || input == '2' || input == '3' || input == '4' || input == '5'
-                || input == '6' || input == '7' || input == '8' || input == '9' || input == '-') { return true; }
+                || input == '6' || input == '7' || input == '8' || input == '9') { return true; }
             else { return false; }
         }
         private Priorities getPriority(char input, bool binary = true)
