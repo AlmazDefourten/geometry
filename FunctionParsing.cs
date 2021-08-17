@@ -26,19 +26,29 @@ namespace geometry
         }
         public FunctionParsing(string functionInput) { m_functionInput = functionInput; }
 
+        private bool isMinusBinary(ref string input, int indexOfMinus)
+        {
+            if (isNumber(input[indexOfMinus - 1]))
+            {
+                return true;
+            } 
+            return false;
+        }
+
         private static bool isNumber(char input)
         {
             if (input == '0' || input == '1' || input == '2' || input == '3' || input == '4' || input == '5'
-                || input == '6' || input == '7' || input == '8' || input == '9') { return true; }
+                || input == '6' || input == '7' || input == '8' || input == '9' || input == '-') { return true; }
             else { return false; }
         }
-        private Priorities getPriority(char input)
+        private Priorities getPriority(char input, bool binary = true)
         {
             if (input == '^') { return Priorities.funcArgument; }
             else if (input == '(') { return Priorities.brackets; }
             else if (input == '*' || input == '/') { return Priorities.dividingAndMultiplication; }
-            else if (input == '+' || input == '-') { return Priorities.minusAndPlus; }
+            else if (input == '+' || ((input == '-') && (binary == true))) { return Priorities.minusAndPlus;  }
             else if (isNumber(input)) { return Priorities.number; }
+            
             return Priorities.errorPriority;
         }
 
@@ -49,13 +59,13 @@ namespace geometry
             return new string(arr);
         }
 
-        private Priorities getBestPriority(string input)
+        private Priorities getBestPriority(string input, bool isBinary = true)
         {
             Priorities bestPriority = Priorities.maxPriority;
             for (int i = 0; i < input.Length; i++)
             {
                 Priorities priority;
-                priority = getPriority(input[i]);
+                priority = getPriority(input[i], isBinary);
                 if (priority < bestPriority) { bestPriority = priority; }
             }
             return bestPriority;
@@ -84,7 +94,10 @@ namespace geometry
                 perem = input[indexOfOperand];
                 
             }
-            if (perem == '-') { operand += "-"; }
+            if (perem == '-') { 
+                operand += "-";
+                startIndex = indexOfOperand;
+            }
             operand = ReverseString(operand);
             return operand;
         }
@@ -94,10 +107,12 @@ namespace geometry
             indexOfOperand++;
             string operand = "";
             if (input[indexOfOperand] == '-') 
-            { 
+            {
+                endIndex = indexOfOperand;
                 operand += "-";
                 indexOfOperand++;
             }
+            
             char perem = input[indexOfOperand];
             while (isNumber(perem))
             {
@@ -123,13 +138,12 @@ namespace geometry
                 int znachenie = calculation(getBestPriority(newString), newString);
                 input = input.Remove(indexOfFirstBracket, indexOfSecondBracket - indexOfFirstBracket + 1);
                 input = input.Insert(indexOfFirstBracket, znachenie.ToString());
-                Debug.WriteLine(input);
                 bestPriority = getBestPriority(input);
             }
             while(bestPriority == Priorities.dividingAndMultiplication)
             {
                 
-                char operat;
+                char operat = 'q';
                 int inpLen = input.Length;
                 for (int i = 0; i < inpLen; i++)
                 {
@@ -142,8 +156,10 @@ namespace geometry
                         if (operat == '*')
                         {
                             int result = leftOperand * rightOperand;
+                            Debug.WriteLine(input);
                             input = input.Remove(startIndex, endIndex - startIndex + 1);
                             input = input.Insert(startIndex, result.ToString());
+                            Debug.WriteLine(input + "multi is ended");
                         }
                         else if (operat == '/') {
                             int result;
@@ -155,19 +171,26 @@ namespace geometry
                         inpLen = input.Length;
                     }
                 }
+                
                 bestPriority = getBestPriority(input);
             }
 
             while (bestPriority == Priorities.minusAndPlus)
             {
-                char operat;
+                bool isBinary = true;
+                char operat = ' ';
                 int inpLen = input.Length;
                 for (int i = 0; i < inpLen; i++)
                 {
-                    if (isOperator(input[i]))
+                    if (isOperator(input[i]) && (isNumber(input[i - 1])))
                     {
                         operat = input[i];
-
+                        Debug.WriteLine(input + " minus");
+                        if (input[i - 1] == 'q')
+                        {
+                            Debug.WriteLine(input + " yes");
+                            break;
+                        }
                         int leftOperand = Convert.ToInt32(getLeftOperand(input, i));
                         int rightOperand = Convert.ToInt32(getRightOperand(input, i));
                         if (operat == '+')
@@ -186,11 +209,19 @@ namespace geometry
                         i = startIndex - 1;
                         inpLen = input.Length;
                     }
+                    else
+                    {
+                        isBinary = false;
+                    }
                 }
-                bestPriority = getBestPriority(input);
+                
+
+                
+                bestPriority = getBestPriority(input, isBinary);
             }
             if (bestPriority == Priorities.number)
             {
+                
                 input = input.Replace("q", "");
                 return Convert.ToInt32(input);
             }
