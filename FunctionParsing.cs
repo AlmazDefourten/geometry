@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
-
+//проверка коммита
 namespace geometry
 {
     class FunctionParsing
