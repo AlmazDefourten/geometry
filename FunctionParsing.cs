@@ -30,7 +30,7 @@ namespace geometry
         private static bool isNumber(char input)
         {
             if (input == '0' || input == '1' || input == '2' || input == '3' || input == '4' || input == '5'
-                || input == '6' || input == '7' || input == '8' || input == '9') { return true; }
+                || input == '6' || input == '7' || input == '8' || input == '9' || input == '.') { return true; }
             else { return false; }
         }
         private Priorities getPriority(char input, bool binary = true)
@@ -124,15 +124,17 @@ namespace geometry
             input = input + "q";
             while (bestPriority == Priorities.brackets)
             {
+                Debug.WriteLine(input + " q");
                 int indexOfFirstBracket = input.LastIndexOf('(');
-                int indexOfSecondBracket = input.IndexOf(")");
+                int indexOfSecondBracket = input.LastIndexOf(")");
                 string newString = input.Substring(indexOfFirstBracket + 1, indexOfSecondBracket - indexOfFirstBracket - 1);
                 double znachenie = calculation(getBestPriority(newString), newString);
                 input = input.Remove(indexOfFirstBracket, indexOfSecondBracket - indexOfFirstBracket + 1);
                 input = input.Insert(indexOfFirstBracket, znachenie.ToString());
                 bestPriority = getBestPriority(input);
+                Debug.WriteLine(input + " в");
             }
-            Debug.WriteLine(input + " q");
+            
             while (bestPriority == Priorities.exponentiation)
             {
                 int inpLen = input.Length;
