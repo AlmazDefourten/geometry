@@ -7,23 +7,13 @@ using System.Diagnostics;
 //проверка коммит
 namespace geometry
 {
-    class FunctionParsing
+    class FunctionParsing : Funcs
     {        
         public string m_functionInput;
         private int startIndex = 0;
         private int endIndex = 0;
 
-        public enum Priorities
-        {
-            funcArgument,
-            brackets,
-            exponentiation,
-            dividingAndMultiplication,
-            minusAndPlus,
-            number,
-            errorPriority,
-            maxPriority
-        }
+        
         public FunctionParsing(string functionInput) { m_functionInput = functionInput; }
 
         
@@ -35,22 +25,15 @@ namespace geometry
         }
         private Priorities getPriority(char input, bool binary = true)
         {
-            if (input == '^') { return Priorities.exponentiation; }
+            if (input == 'c' || input == 's' || input == 't' || input == 'g') { return Priorities.funcArgument; }// g - котангенс
+            else if (input == '^') { return Priorities.exponentiation; }
             else if (input == '(') { return Priorities.brackets; }
             else if (input == '*' || input == '/') { return Priorities.dividingAndMultiplication; }
-            else if (input == '+' || ((input == '-') && (binary == true))) { return Priorities.minusAndPlus;  }
+            else if (input == '+' || ((input == '-') && (binary == true))) { return Priorities.minusAndPlus; }
             else if (isNumber(input)) { return Priorities.number; }
             
             return Priorities.errorPriority;
         }
-
-        public static string ReverseString(string s)
-        {
-            char[] arr = s.ToCharArray();
-            Array.Reverse(arr);
-            return new string(arr);
-        }
-
         private Priorities getBestPriority(string input, bool isBinary = true)
         {
             Priorities bestPriority = Priorities.maxPriority;
@@ -62,6 +45,14 @@ namespace geometry
             }
             return bestPriority;
         }
+
+        public static string ReverseString(string s)
+        {
+            char[] arr = s.ToCharArray();
+            Array.Reverse(arr);
+            return new string(arr);
+        }
+
         
         private bool isOperator(char input)
         {
@@ -122,6 +113,10 @@ namespace geometry
             ///для чего меня скобки?
             input = input.Insert(0, "q");
             input = input + "q";
+            while (bestPriority == Priorities.funcArgument)
+            {
+
+            }
             while (bestPriority == Priorities.brackets)
             {
                 Debug.WriteLine(input + " q");
