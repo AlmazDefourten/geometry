@@ -11,8 +11,8 @@ namespace geometry
     {
         public enum Priorities
         {
-            funcArgument,
             brackets,
+            funcArgument,
             exponentiation,
             dividingAndMultiplication,
             minusAndPlus,

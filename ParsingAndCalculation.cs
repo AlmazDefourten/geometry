@@ -66,13 +66,8 @@ namespace geometry
             ///для чего меня скобки?
             input = input.Insert(0, "q");
             input = input + "q";
-            while (bestPriority == Priorities.funcArgument)
-            {
-
-            }
             while (bestPriority == Priorities.brackets)
             {
-                Debug.WriteLine(input + " q");
                 int indexOfFirstBracket = input.LastIndexOf('(');
                 int indexOfSecondBracket = input.LastIndexOf(")");
                 string newString = input.Substring(indexOfFirstBracket + 1, indexOfSecondBracket - indexOfFirstBracket - 1);
@@ -80,9 +75,31 @@ namespace geometry
                 input = input.Remove(indexOfFirstBracket, indexOfSecondBracket - indexOfFirstBracket + 1);
                 input = input.Insert(indexOfFirstBracket, znachenie.ToString());
                 bestPriority = getBestPriority(input);
-                Debug.WriteLine(input + " в");
             }
-            
+            while (bestPriority == Priorities.funcArgument)
+            {
+                input = simplifyingTheFunctions(input);
+                int inpLen = input.Length;
+                for (int i = 0; i < inpLen; i++)
+                {
+                    if (isFuncOperator(input[i]))
+                    {
+                        startIndex = i;
+                        double rightOperand;
+                        char oper = ' ';
+                        double result = 0;
+                        rightOperand = Convert.ToDouble(getRightOperand(input, i));
+                        oper = input[i];
+                        if (oper == 's') { result = Math.Asin(rightOperand); }
+                        else if (oper == 'c') { result = Math.Acos(rightOperand); }
+                        else if (oper == 't') { result = Math.Atan(rightOperand); }
+                        else if (oper == 'g') { result = 1 / Math.Atan(rightOperand); }
+                        input = input.Remove(startIndex, endIndex - startIndex + 1);
+                        input = input.Insert(startIndex, result.ToString());
+                    }
+                }
+                bestPriority = getBestPriority(input);
+            }
             while (bestPriority == Priorities.exponentiation)
             {
                 int inpLen = input.Length;
@@ -97,7 +114,6 @@ namespace geometry
                         double result = Math.Pow(leftOperand, rightOperand);
                         input = input.Remove(startIndex, endIndex - startIndex + 1);
                         input = input.Insert(startIndex, result.ToString());
-                        Debug.WriteLine(input + "o");
                         inpLen = input.Length;
                     }
                 }
