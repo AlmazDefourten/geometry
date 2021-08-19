@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace geometry
 {
-    class Funcs
+    class Funcs : PrioritiesOper
     {
 
     }

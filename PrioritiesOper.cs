@@ -17,8 +17,8 @@ namespace geometry
         errorPriority,
         maxPriority
     }
-    class PrioritiesOper
-    {
+    class PrioritiesOper 
+    {        
         private Priorities getPriority(char input, bool binary = true)
         {
             if (input == 'c' || input == 's' || input == 't' || input == 'g') { return Priorities.funcArgument; }// g - котангенс
@@ -26,7 +26,7 @@ namespace geometry
             else if (input == '(') { return Priorities.brackets; }
             else if (input == '*' || input == '/') { return Priorities.dividingAndMultiplication; }
             else if (input == '+' || ((input == '-') && (binary == true))) { return Priorities.minusAndPlus; }
-            else if (isNumber(input)) { return Priorities.number; }
+            //else if (isNumber(input)) { return Priorities.number; }
 
             return Priorities.errorPriority;
         }
@@ -40,6 +40,11 @@ namespace geometry
                 if (priority < bestPriority) { bestPriority = priority; }
             }
             return bestPriority;
+        }
+
+        void dsd()
+        {
+            
         }
 
     }
