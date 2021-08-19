@@ -21,6 +21,7 @@ namespace geometry
         }
         protected string simplifyingTheFunctions(string input)
         {
+            input = input.Replace("pi", Math.PI.ToString());
             input = input.Replace("cos", "c");
             input = input.Replace("sin", "s");
             input = input.Replace("tg", "t");

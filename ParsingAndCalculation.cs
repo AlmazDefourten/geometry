@@ -90,10 +90,10 @@ namespace geometry
                         double result = 0;
                         rightOperand = Convert.ToDouble(getRightOperand(input, i));
                         oper = input[i];
-                        if (oper == 's') { result = Math.Asin(rightOperand); }
-                        else if (oper == 'c') { result = Math.Acos(rightOperand); }
-                        else if (oper == 't') { result = Math.Atan(rightOperand); }
-                        else if (oper == 'g') { result = 1 / Math.Atan(rightOperand); }
+                        if (oper == 's') { result = Math.Sin(rightOperand); }
+                        else if (oper == 'c') { result = Math.Cos(rightOperand); }
+                        else if (oper == 't') { result = Math.Tan(rightOperand); }
+                        else if (oper == 'g') { result = 1 / Math.Tan(rightOperand); }
                         input = input.Remove(startIndex, endIndex - startIndex + 1);
                         input = input.Insert(startIndex, result.ToString());
                     }
