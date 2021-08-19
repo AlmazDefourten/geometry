@@ -39,21 +39,21 @@ namespace geometry
 
         public mainForm()
         {
-            InitializeComponent();       
+            InitializeComponent();
             KeyPreview = true;
             this.Activate();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
 
         }
-   
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -62,11 +62,11 @@ namespace geometry
 
         private void mainForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
                 mainFunction();
             }
-            else if(e.KeyCode == Keys.Escape)
+            else if (e.KeyCode == Keys.Escape)
             {
                 Application.Exit();
             }
@@ -77,8 +77,8 @@ namespace geometry
             // + - / cos sin * =
             //need to add if I missed
             char T = e.KeyChar;
-   
-            if (Char.IsDigit(T) || T == '+' || T == '-' || T == '*' || T == '/' || T == '=' || T == 'c' || T == 'o' || T == 's' || T == 'i' || T == 'n' || e.KeyChar == '\b' || e.KeyChar == Convert.ToChar(",") || T == '^' || T == '(' || T == ')')
+
+            if (Char.IsDigit(T) || T == '+' || T == '-' || T == '*' || T == '/' || T == '=' || T == 'c' || T == 'o' || T == 's' || T == 'i' || T == 'n' || T == 'p' || T == 'i'|| T == ',' || e.KeyChar == '\b' || e.KeyChar == Convert.ToChar(",") || T == '^' || T == '(' || T == ')')
             {
                
             }

@@ -62,10 +62,12 @@ namespace geometry
 
         public double calculation(Priorities bestPriority, string input)
         {
+            Debug.WriteLine(Math.PI);
             // надо заменить скобки аргументов ф-й на [ и ] а так же поменять кодовыми буквами sin = s, cos = c и тд
             ///для чего меня скобки?
             input = input.Insert(0, "q");
             input = input + "q";
+            input = simplifyingTheFunctions(input);
             while (bestPriority == Priorities.brackets)
             {
                 int indexOfFirstBracket = input.LastIndexOf('(');
@@ -78,7 +80,6 @@ namespace geometry
             }
             while (bestPriority == Priorities.funcArgument)
             {
-                input = simplifyingTheFunctions(input);
                 int inpLen = input.Length;
                 for (int i = 0; i < inpLen; i++)
                 {
@@ -96,6 +97,7 @@ namespace geometry
                         else if (oper == 'g') { result = 1 / Math.Tan(rightOperand); }
                         input = input.Remove(startIndex, endIndex - startIndex + 1);
                         input = input.Insert(startIndex, result.ToString());
+                        inpLen = input.Length;
                     }
                 }
                 bestPriority = getBestPriority(input);
