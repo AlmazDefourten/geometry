@@ -53,7 +53,8 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="FunctionParsing.cs" />
+    <Compile Include="HelpFuncs.cs" />
+    <Compile Include="ParsingAndCalculation.cs" />
     <Compile Include="PrioritiesOper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -6,20 +6,21 @@ using System.Threading.Tasks;
 
 namespace geometry
 {
-    public enum Priorities
+    
+    class PrioritiesOper : HelpFuncs
     {
-        funcArgument,
-        brackets,
-        exponentiation,
-        dividingAndMultiplication,
-        minusAndPlus,
-        number,
-        errorPriority,
-        maxPriority
-    }
-    class PrioritiesOper
-    {
-        private Priorities getPriority(char input, bool binary = true)
+        public enum Priorities
+        {
+            funcArgument,
+            brackets,
+            exponentiation,
+            dividingAndMultiplication,
+            minusAndPlus,
+            number,
+            errorPriority,
+            maxPriority
+        }
+        protected Priorities getPriority(char input, bool binary = true)
         {
             if (input == 'c' || input == 's' || input == 't' || input == 'g') { return Priorities.funcArgument; }// g - котангенс
             else if (input == '^') { return Priorities.exponentiation; }
@@ -30,7 +31,7 @@ namespace geometry
 
             return Priorities.errorPriority;
         }
-        private Priorities getBestPriority(string input, bool isBinary = true)
+        protected Priorities getBestPriority(string input, bool isBinary = true)
         {
             Priorities bestPriority = Priorities.maxPriority;
             for (int i = 0; i < input.Length; i++)
