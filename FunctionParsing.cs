@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 //проверка коммит
+//сосать
 namespace geometry
 {
     class FunctionParsing
