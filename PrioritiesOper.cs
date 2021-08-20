@@ -20,6 +20,7 @@ namespace geometry
             errorPriority,
             maxPriority
         }
+        //перечислитель для приоритетов
         protected Priorities getPriority(char input, bool binary = true)
         {
             if (input == 'c' || input == 's' || input == 't' || input == 'g') { return Priorities.funcArgument; }// g - котангенс
@@ -31,6 +32,7 @@ namespace geometry
 
             return Priorities.errorPriority;
         }
+        //вычисляет уровень приоритета символа-оператора
         protected Priorities getBestPriority(string input, bool isBinary = true)
         {
             Priorities bestPriority = Priorities.maxPriority;
@@ -42,6 +44,6 @@ namespace geometry
             }
             return bestPriority;
         }
-
+        //вычисляет наивысший уровень приоритета в строке
     }
 }

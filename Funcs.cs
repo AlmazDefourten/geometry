@@ -19,6 +19,7 @@ namespace geometry
                 return false;
             }
         }
+        //проверяет является ли символ триг функцией
         protected string simplifyingTheFunctions(string input)
         {
             input = input.Replace("pi", Math.PI.ToString());
@@ -28,5 +29,6 @@ namespace geometry
             input = input.Replace("ctg", "g");
             return input;
         }
+        //упрощение функций и pi(для явного вычисления с pi, потом добавлю еще одно вычисление)
     }
 }

@@ -14,12 +14,14 @@ namespace geometry
                 || input == '6' || input == '7' || input == '8' || input == '9' || input == ',') { return true; }
             else { return false; }
         }
+        //проверяет, является ли данный символ цифрой или для дабл ','
         public static string ReverseString(string s)
         {
             char[] arr = s.ToCharArray();
             Array.Reverse(arr);
             return new string(arr);
         }
+        //разворачивает строку
         protected static bool isOperator(char input)
         {
             if (input == '*' || input == '/' || input == '-' || input == '+' || input == '^')
@@ -28,5 +30,6 @@ namespace geometry
             }
             return false;
         }
+        //проверяет, является ли данный символ оператором
     }
 }

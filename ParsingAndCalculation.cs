@@ -18,7 +18,6 @@ namespace geometry
         public ParsingAndCalculation(string functionInput) { m_functionInput = functionInput; }
         private string getLeftOperand(string input, int indexOfOperand)
         {
-            
             indexOfOperand--;
             string operand = "";
             char perem = input[indexOfOperand];
@@ -37,7 +36,7 @@ namespace geometry
             operand = ReverseString(operand);
             return operand;
         }
-
+        //возвращает левое от оператора число в входящей строке
         private string getRightOperand(string input, int indexOfOperand)
         {
             indexOfOperand++;
@@ -59,7 +58,7 @@ namespace geometry
             }
             return operand;
         }
-
+        //возвращает правое от оператора число в входящей строке
         public double calculation(Priorities bestPriority, string input)
         {
             Debug.WriteLine(Math.PI);
@@ -203,6 +202,7 @@ namespace geometry
             }
             return 0;
         }
+        //вычисления, логика: по приоритетам вычисляются выражения, отталкиваясь от операторов, скобки вычисляются рекурентно
         double matchDecide()
         {
             Priorities bestPriority = getBestPriority(m_functionInput);
@@ -211,7 +211,7 @@ namespace geometry
             double result = calculation(bestPriority, perem);
             return result;
         }
-
+        //я ебу нахуй ты это сунул
         public double getY(double x)
         {
             //пока что возвращает просто значение вычислений в дальнейшем будем выдавать решения, работа с неравенствами в другом классе
