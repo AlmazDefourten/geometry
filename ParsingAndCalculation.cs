@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
-//проверка коммит
-//сосать
 namespace geometry
 {
     class ParsingAndCalculation : Funcs
@@ -13,8 +11,6 @@ namespace geometry
         public string m_functionInput;
         private int startIndex = 0;
         private int endIndex = 0;
-
-        
         public ParsingAndCalculation(string functionInput) { m_functionInput = functionInput; }
         private string getLeftOperand(string input, int indexOfOperand)
         {
@@ -61,9 +57,6 @@ namespace geometry
         //возвращает правое от оператора число в входящей строке
         public double calculation(Priorities bestPriority, string input)
         {
-            Debug.WriteLine(Math.PI);
-            // надо заменить скобки аргументов ф-й на [ и ] а так же поменять кодовыми буквами sin = s, cos = c и тд
-            ///для чего меня скобки?
             input = input.Insert(0, "q");
             input = input + "q";
             input = simplifyingTheFunctions(input);
@@ -141,9 +134,9 @@ namespace geometry
                         }
                         else if (operat == '/') {
                             double result;
-                                result = leftOperand / rightOperand;
-                                input = input.Remove(startIndex, endIndex - startIndex + 1);
-                                input = input.Insert(startIndex, result.ToString());
+                            result = leftOperand / rightOperand;
+                            input = input.Remove(startIndex, endIndex - startIndex + 1);
+                            input = input.Insert(startIndex, result.ToString());
                                 
                         }
                         inpLen = input.Length;

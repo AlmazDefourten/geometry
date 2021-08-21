@@ -20,7 +20,7 @@ namespace geometry
             }
         }
         //проверяет является ли символ триг функцией
-        protected string simplifyingTheFunctions(string input)
+        protected string simplifyingTheFunctions(string input, bool isExplicitCalc = false)
         {
             input = input.Replace("pi", Math.PI.ToString());
             input = input.Replace("cos", "c");

@@ -8,6 +8,16 @@ namespace geometry
 {
     class HelpFuncs
     {
+        protected int gcd(int a, int b)
+        {
+            while (a > 0 && b > 0)
+            {
+                if (a > b) { a = a % b; }
+                else { b = b % a; }
+            }
+            return (a + b);
+        }
+        //нахождение нод по алоритму евклида
         protected static bool isNumber(char input)
         {
             if (input == '0' || input == '1' || input == '2' || input == '3' || input == '4' || input == '5'
@@ -31,5 +41,6 @@ namespace geometry
             return false;
         }
         //проверяет, является ли данный символ оператором
+        simplifying the fraction
     }
 }
