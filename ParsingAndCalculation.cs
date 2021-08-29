@@ -133,10 +133,20 @@ namespace geometry
                             input = input.Insert(startIndex, result.ToString());
                         }
                         else if (operat == '/') {
-                            double result;
-                            result = leftOperand / rightOperand;
-                            input = input.Remove(startIndex, endIndex - startIndex + 1);
-                            input = input.Insert(startIndex, result.ToString());
+                            double result = 0;
+                            int thisGcd = gcd(Convert.ToInt32(leftOperand), Convert.ToInt32(rightOperand));
+                            if (thisGcd == rightOperand)
+                            {
+                                result = leftOperand / rightOperand;
+                                input = input.Remove(startIndex, endIndex - startIndex + 1);
+                                input = input.Insert(startIndex, result.ToString());
+                            }
+                            else
+                            {
+                                input = input.Remove(i, 1);
+                                input = input.Insert(i, "b");
+                            }
+                            
                                 
                         }
                         inpLen = input.Length;

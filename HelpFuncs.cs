@@ -41,6 +41,13 @@ namespace geometry
             return false;
         }
         //проверяет, является ли данный символ оператором
-        simplifying the fraction
+        void simplifyingTheFraction(ref string input)
+        {
+            int inpLen = input.Length;
+            for (int i = 0; i < inpLen; i++)
+            {
+                if (input[i] == '/')
+            }
+        }
     }
 }
