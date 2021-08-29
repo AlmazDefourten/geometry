@@ -21,7 +21,7 @@ namespace geometry
         protected static bool isNumber(char input)
         {
             if (input == '0' || input == '1' || input == '2' || input == '3' || input == '4' || input == '5'
-                || input == '6' || input == '7' || input == '8' || input == '9' || input == ',') { return true; }
+                || input == '6' || input == '7' || input == '8' || input == '9' || input == ',' || input == 'b') { return true; }
             else { return false; }
         }
         //проверяет, является ли данный символ цифрой или для дабл ','
@@ -41,7 +41,7 @@ namespace geometry
             return false;
         }
         //проверяет, является ли данный символ оператором
-        void simplifyingTheFraction(ref string input)
+        /*void simplifyingTheFraction(ref string input)
         {
             int inpLen = input.Length;
             for (int i = 0; i < inpLen; i++)
@@ -49,5 +49,6 @@ namespace geometry
                 if (input[i] == '/')
             }
         }
+        */
     }
 }

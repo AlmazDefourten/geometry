@@ -55,7 +55,7 @@ namespace geometry
             return operand;
         }
         //возвращает правое от оператора число в входящей строке
-        public double calculation(Priorities bestPriority, string input)
+        public string calculation(Priorities bestPriority, string input, bool isExplicit = true)
         {
             input = input.Insert(0, "q");
             input = input + "q";
@@ -65,7 +65,7 @@ namespace geometry
                 int indexOfFirstBracket = input.LastIndexOf('(');
                 int indexOfSecondBracket = input.LastIndexOf(")");
                 string newString = input.Substring(indexOfFirstBracket + 1, indexOfSecondBracket - indexOfFirstBracket - 1);
-                double znachenie = calculation(getBestPriority(newString), newString);
+                string znachenie = calculation(getBestPriority(newString), newString);
                 input = input.Remove(indexOfFirstBracket, indexOfSecondBracket - indexOfFirstBracket + 1);
                 input = input.Insert(indexOfFirstBracket, znachenie.ToString());
                 bestPriority = getBestPriority(input);
@@ -135,19 +135,23 @@ namespace geometry
                         else if (operat == '/') {
                             double result = 0;
                             int thisGcd = gcd(Convert.ToInt32(leftOperand), Convert.ToInt32(rightOperand));
-                            if (thisGcd == rightOperand)
+                            if (isExplicit == false)
                             {
-                                result = leftOperand / rightOperand;
-                                input = input.Remove(startIndex, endIndex - startIndex + 1);
-                                input = input.Insert(startIndex, result.ToString());
+                                if (thisGcd == rightOperand || isExplicit == true)
+                                {
+                                    result = leftOperand / rightOperand;
+                                    input = input.Remove(startIndex, endIndex - startIndex + 1);
+                                    input = input.Insert(startIndex, result.ToString());
+                                }
+                                else
+                                {
+                                    input = input.Remove(i, 1);
+                                    input = input.Insert(i, "b");
+                                    string res = leftOperand/thisGcd + "b" + rightOperand/thisGcd;
+                                    input = input.Remove(startIndex, endIndex - startIndex + 1);
+                                    input = input.Insert(startIndex, res.ToString());
+                                }
                             }
-                            else
-                            {
-                                input = input.Remove(i, 1);
-                                input = input.Insert(i, "b");
-                            }
-                            
-                                
                         }
                         inpLen = input.Length;
                     }
@@ -199,19 +203,19 @@ namespace geometry
             }
             if (bestPriority == Priorities.number)
             {
-                
+                input = input.Replace("b", "/");
                 input = input.Replace("q", "");
-                return Convert.ToDouble(input);
+                return input;
             }
-            return 0;
+            return "error, end of while CALCULATION";
         }
         //вычисления, логика: по приоритетам вычисляются выражения, отталкиваясь от операторов, скобки вычисляются рекурентно
-        double matchDecide()
+        public string matchDecide()
         {
             Priorities bestPriority = getBestPriority(m_functionInput);
             int y;
             string perem = m_functionInput;
-            double result = calculation(bestPriority, perem);
+            string result = calculation(bestPriority, perem, false);
             return result;
         }
         //я ебу нахуй ты это сунул
@@ -219,7 +223,7 @@ namespace geometry
         {
             //пока что возвращает просто значение вычислений в дальнейшем будем выдавать решения, работа с неравенствами в другом классе
             //I don't understand chto делать, т.к. рклизовывать на калькулятор график функции? - не трогай просто работай с этим из другого класса где ты рисуешь
-            return matchDecide();
+            return Convert.ToDouble(matchDecide());
         }
     }
 }

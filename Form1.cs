@@ -25,7 +25,7 @@ namespace geometry
                 {
                     string textBoxInput = textBox1.Text;
                     ParsingAndCalculation parserObject = new ParsingAndCalculation(textBoxInput);
-                    double result = parserObject.getY(1);
+                    string result = parserObject.matchDecide();
                     MessageBox.Show(result.ToString());
                 }
                 catch (Exception)
