@@ -25,6 +25,18 @@ namespace geometry
             else { return false; }
         }
         //проверяет, является ли данный символ цифрой или для дабл ','
+        protected int getFirstIndexOfDividing(ref string input)
+        {
+            int inpLen = input.Length;
+            for (int i = 0; i < inpLen; i++)
+            {
+                if(input[i] == 'b')
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
         public static string ReverseString(string s)
         {
             char[] arr = s.ToCharArray();

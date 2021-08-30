@@ -54,6 +54,45 @@ namespace geometry
             }
             return operand;
         }
+        string multiplyingFractions(string firstFraction, string secondFraction)
+        {
+            string firstNumerator = "", secondNumerator = "", firstDenominator = "", secondDenominator = "";
+            firstFraction = "q" + firstFraction + "q";
+            secondFraction = "q" + secondFraction + "q";
+            int firstIndexOfDividingFirst = getFirstIndexOfDividing(ref firstFraction);
+            int firstIndexOfDividingSecond = getFirstIndexOfDividing(ref secondFraction);
+            if (firstIndexOfDividingFirst > 0 && firstIndexOfDividingSecond > 0)
+            {
+                firstNumerator = getLeftOperand(firstFraction, firstIndexOfDividingFirst);
+                firstDenominator = getRightOperand(firstFraction, firstIndexOfDividingFirst);
+                secondNumerator = getLeftOperand(secondFraction, firstIndexOfDividingSecond);
+                secondDenominator = getRightOperand(secondFraction, firstIndexOfDividingSecond);
+            }
+            else if (firstIndexOfDividingFirst > 0 && firstIndexOfDividingSecond < 0)
+            {
+                firstNumerator = getLeftOperand(firstFraction, firstIndexOfDividingFirst);
+                firstDenominator = getRightOperand(firstFraction, firstIndexOfDividingFirst);
+                secondFraction = secondFraction.Replace("q", "");
+                secondNumerator = secondFraction;
+                secondDenominator = "1";
+            }
+            else if (firstIndexOfDividingFirst < 0 && firstIndexOfDividingSecond > 0)
+            {
+                firstFraction = firstFraction.Replace("q", "");
+                firstDenominator = "1";
+                firstNumerator = firstFraction;
+                secondNumerator = getLeftOperand(secondFraction, firstIndexOfDividingSecond);
+                secondDenominator = getRightOperand(secondFraction, firstIndexOfDividingSecond);
+            }
+            else
+            {
+                Debug.WriteLine("Error! in multiolyingFractions func.");
+            }
+            string resultNumerator = (Convert.ToInt32(firstNumerator) * Convert.ToInt32(secondNumerator)).ToString();
+            string resultDenomerator = (Convert.ToInt32(firstDenominator) * Convert.ToInt32(secondDenominator)).ToString();
+            return resultNumerator + "/" + resultDenomerator;
+        }
+
         //возвращает правое от оператора число в входящей строке
         public string calculation(Priorities bestPriority, string input, bool isExplicit = true)
         {
@@ -123,9 +162,14 @@ namespace geometry
                     if(isOperator(input[i]))
                     {
                         operat = input[i];
-                        
-                        double leftOperand = Convert.ToDouble(getLeftOperand(input, i));
-                        double rightOperand = Convert.ToDouble(getRightOperand(input, i));
+                        string leftOp = getLeftOperand(input, i);
+                        string rightOp = getRightOperand(input, i);
+                        if (getFirstIndexOfDividing(ref leftOp) > 0 || getFirstIndexOfDividing(ref rightOp) > 0)
+                        {
+                            string result = multiplyingFractions(leftOp, rightOp);
+                        }
+                        double leftOperand = Convert.ToDouble(leftOp);
+                        double rightOperand = Convert.ToDouble(rightOp);
                         if (operat == '*')
                         {
                             double result = leftOperand * rightOperand;
@@ -135,8 +179,6 @@ namespace geometry
                         else if (operat == '/') {
                             double result = 0;
                             int thisGcd = gcd(Convert.ToInt32(leftOperand), Convert.ToInt32(rightOperand));
-                            if (isExplicit == false)
-                            {
                                 if (thisGcd == rightOperand || isExplicit == true)
                                 {
                                     result = leftOperand / rightOperand;
@@ -152,7 +194,6 @@ namespace geometry
                                     input = input.Insert(startIndex, res.ToString());
                                 }
                             }
-                        }
                         inpLen = input.Length;
                     }
                 }
@@ -195,11 +236,7 @@ namespace geometry
                     {
                         isBinary = false;
                     }
-                }
-                
-
-                
-                bestPriority = getBestPriority(input, isBinary);
+                }                bestPriority = getBestPriority(input, isBinary);
             }
             if (bestPriority == Priorities.number)
             {

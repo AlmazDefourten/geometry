@@ -38,6 +38,7 @@ namespace geometry
             input = input.Replace("ctg", "g");
             return input;
         }
+        
         //упрощение функций и дробей с pi and x
     }
 }
