@@ -6,27 +6,31 @@ using System.Threading.Tasks;
 
 namespace geometry
 {
-    public enum Priorities
+    
+    class PrioritiesOper : HelpFuncs
     {
-        funcArgument,
-        brackets,
-        exponentiation,
-        dividingAndMultiplication,
-        minusAndPlus,
-        number,
-        errorPriority,
-        maxPriority
-    }
-    class PrioritiesOper
-    {
-        private Priorities getPriority(char input, bool binary = true)
+        public enum Priorities
+        {
+            brackets,
+            funcArgument,
+            exponentiation,
+            dividing,
+            multiplication,
+            minusAndPlus,
+            number,
+            errorPriority,
+            maxPriority
+        }
+        //перечислитель для приоритетов
+        protected Priorities getPriority(char input, bool binary = true)
         {
             if (input == 'c' || input == 's' || input == 't' || input == 'g') { return Priorities.funcArgument; }// g - котангенс
             else if (input == '^') { return Priorities.exponentiation; }
             else if (input == '(') { return Priorities.brackets; }
-            else if (input == '*' || input == '/') { return Priorities.dividingAndMultiplication; }
+            else if (input == '/') { return Priorities.dividing; }
+            else if (input == '*') { return Priorities.multiplication; }
             else if (input == '+' || ((input == '-') && (binary == true))) { return Priorities.minusAndPlus; }
-            //else if (isNumber(input)) { return Priorities.number; }
+            else if (isNumber(input)) { return Priorities.number; }
 
             return Priorities.errorPriority;
         }
@@ -42,6 +46,6 @@ namespace geometry
             }
             return bestPriority;
         }
-
+        //вычисляет наивысший уровень приоритета в строке
     }
 }
