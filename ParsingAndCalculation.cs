@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
-//проверка коммит
-//сосать
 namespace geometry
 {
-    class FunctionParsing : Funcs
+    class ParsingAndCalculation : Funcs
     {        
         public string m_functionInput;
         private int startIndex = 0;
@@ -18,7 +16,7 @@ namespace geometry
         public FunctionParsing(string functionInput) { m_functionInput = functionInput; }
 
         
-        public static bool isNumber(char input)
+        private static bool isNumber(char input)
         {
             if (input == '0' || input == '1' || input == '2' || input == '3' || input == '4' || input == '5'
                 || input == '6' || input == '7' || input == '8' || input == '9' || input == '.') { return true; }
@@ -66,7 +64,6 @@ namespace geometry
 
         private string getLeftOperand(string input, int indexOfOperand)
         {
-            
             indexOfOperand--;
             string operand = "";
             char perem = input[indexOfOperand];
@@ -85,7 +82,7 @@ namespace geometry
             operand = ReverseString(operand);
             return operand;
         }
-
+        //возвращает левое от оператора число в входящей строке
         private string getRightOperand(string input, int indexOfOperand)
         {
             indexOfOperand++;
@@ -107,30 +104,85 @@ namespace geometry
             }
             return operand;
         }
-
-        public double calculation(Priorities bestPriority, string input)
+        string multiplyingFractions(string firstFraction, string secondFraction)
         {
-            // надо заменить скобки аргументов ф-й на [ и ] а так же поменять кодовыми буквами sin = s, cos = c и тд
-            ///для чего меня скобки?
+            string firstNumerator = "", secondNumerator = "", firstDenominator = "", secondDenominator = "";
+            firstFraction = "q" + firstFraction + "q";
+            secondFraction = "q" + secondFraction + "q";
+            int firstIndexOfDividingFirst = getFirstIndexOfDividing(ref firstFraction);
+            int firstIndexOfDividingSecond = getFirstIndexOfDividing(ref secondFraction);
+            if (firstIndexOfDividingFirst > 0 && firstIndexOfDividingSecond > 0)
+            {
+                firstNumerator = getLeftOperand(firstFraction, firstIndexOfDividingFirst);
+                firstDenominator = getRightOperand(firstFraction, firstIndexOfDividingFirst);
+                secondNumerator = getLeftOperand(secondFraction, firstIndexOfDividingSecond);
+                secondDenominator = getRightOperand(secondFraction, firstIndexOfDividingSecond);
+            }
+            else if (firstIndexOfDividingFirst > 0 && firstIndexOfDividingSecond < 0)
+            {
+                firstNumerator = getLeftOperand(firstFraction, firstIndexOfDividingFirst);
+                firstDenominator = getRightOperand(firstFraction, firstIndexOfDividingFirst);
+                secondFraction = secondFraction.Replace("q", "");
+                secondNumerator = secondFraction;
+                secondDenominator = "1";
+            }
+            else if (firstIndexOfDividingFirst < 0 && firstIndexOfDividingSecond > 0)
+            {
+                firstFraction = firstFraction.Replace("q", "");
+                firstDenominator = "1";
+                firstNumerator = firstFraction;
+                secondNumerator = getLeftOperand(secondFraction, firstIndexOfDividingSecond);
+                secondDenominator = getRightOperand(secondFraction, firstIndexOfDividingSecond);
+            }
+            else
+            {
+                Debug.WriteLine("Error! in multiolyingFractions func.");
+            }
+            string resultNumerator = (Convert.ToInt32(firstNumerator) * Convert.ToInt32(secondNumerator)).ToString();
+            string resultDenomerator = (Convert.ToInt32(firstDenominator) * Convert.ToInt32(secondDenominator)).ToString();
+            return resultNumerator + "/" + resultDenomerator;
+        }
+
+        //возвращает правое от оператора число в входящей строке
+        public string calculation(Priorities bestPriority, string input, bool isExplicit = true)
+        {
             input = input.Insert(0, "q");
             input = input + "q";
-            while (bestPriority == Priorities.funcArgument)
-            {
-
-            }
+            input = simplifyingTheFunctions(input);
             while (bestPriority == Priorities.brackets)
             {
-                Debug.WriteLine(input + " q");
                 int indexOfFirstBracket = input.LastIndexOf('(');
                 int indexOfSecondBracket = input.LastIndexOf(")");
                 string newString = input.Substring(indexOfFirstBracket + 1, indexOfSecondBracket - indexOfFirstBracket - 1);
-                double znachenie = calculation(getBestPriority(newString), newString);
+                string znachenie = calculation(getBestPriority(newString), newString);
                 input = input.Remove(indexOfFirstBracket, indexOfSecondBracket - indexOfFirstBracket + 1);
                 input = input.Insert(indexOfFirstBracket, znachenie.ToString());
                 bestPriority = getBestPriority(input);
-                Debug.WriteLine(input + " в");
             }
-            
+            while (bestPriority == Priorities.funcArgument)
+            {
+                int inpLen = input.Length;
+                for (int i = 0; i < inpLen; i++)
+                {
+                    if (isFuncOperator(input[i]))
+                    {
+                        startIndex = i;
+                        double rightOperand;
+                        char oper = ' ';
+                        double result = 0;
+                        rightOperand = Convert.ToDouble(getRightOperand(input, i));
+                        oper = input[i];
+                        if (oper == 's') { result = Math.Sin(rightOperand); }
+                        else if (oper == 'c') { result = Math.Cos(rightOperand); }
+                        else if (oper == 't') { result = Math.Tan(rightOperand); }
+                        else if (oper == 'g') { result = 1 / Math.Tan(rightOperand); }
+                        input = input.Remove(startIndex, endIndex - startIndex + 1);
+                        input = input.Insert(startIndex, result.ToString());
+                        inpLen = input.Length;
+                    }
+                }
+                bestPriority = getBestPriority(input);
+            }
             while (bestPriority == Priorities.exponentiation)
             {
                 int inpLen = input.Length;
@@ -145,7 +197,6 @@ namespace geometry
                         double result = Math.Pow(leftOperand, rightOperand);
                         input = input.Remove(startIndex, endIndex - startIndex + 1);
                         input = input.Insert(startIndex, result.ToString());
-                        Debug.WriteLine(input + "o");
                         inpLen = input.Length;
                     }
                 }
@@ -161,9 +212,14 @@ namespace geometry
                     if(isOperator(input[i]))
                     {
                         operat = input[i];
-                        
-                        double leftOperand = Convert.ToDouble(getLeftOperand(input, i));
-                        double rightOperand = Convert.ToDouble(getRightOperand(input, i));
+                        string leftOp = getLeftOperand(input, i);
+                        string rightOp = getRightOperand(input, i);
+                        if (getFirstIndexOfDividing(ref leftOp) > 0 || getFirstIndexOfDividing(ref rightOp) > 0)
+                        {
+                            string result = multiplyingFractions(leftOp, rightOp);
+                        }
+                        double leftOperand = Convert.ToDouble(leftOp);
+                        double rightOperand = Convert.ToDouble(rightOp);
                         if (operat == '*')
                         {
                             double result = leftOperand * rightOperand;
@@ -171,12 +227,23 @@ namespace geometry
                             input = input.Insert(startIndex, result.ToString());
                         }
                         else if (operat == '/') {
-                            double result;
-                                result = leftOperand / rightOperand;
-                                input = input.Remove(startIndex, endIndex - startIndex + 1);
-                                input = input.Insert(startIndex, result.ToString());
-                                
-                        }
+                            double result = 0;
+                            int thisGcd = gcd(Convert.ToInt32(leftOperand), Convert.ToInt32(rightOperand));
+                                if (thisGcd == rightOperand || isExplicit == true)
+                                {
+                                    result = leftOperand / rightOperand;
+                                    input = input.Remove(startIndex, endIndex - startIndex + 1);
+                                    input = input.Insert(startIndex, result.ToString());
+                                }
+                                else
+                                {
+                                    input = input.Remove(i, 1);
+                                    input = input.Insert(i, "b");
+                                    string res = leftOperand/thisGcd + "b" + rightOperand/thisGcd;
+                                    input = input.Remove(startIndex, endIndex - startIndex + 1);
+                                    input = input.Insert(startIndex, res.ToString());
+                                }
+                            }
                         inpLen = input.Length;
                     }
                 }
@@ -219,34 +286,31 @@ namespace geometry
                     {
                         isBinary = false;
                     }
-                }
-                
-
-                
-                bestPriority = getBestPriority(input, isBinary);
+                }                bestPriority = getBestPriority(input, isBinary);
             }
             if (bestPriority == Priorities.number)
             {
-                
+                input = input.Replace("b", "/");
                 input = input.Replace("q", "");
-                return Convert.ToDouble(input);
+                return input;
             }
-            return 0;
+            return "error, end of while CALCULATION";
         }
-        double matchDecide()
+        //вычисления, логика: по приоритетам вычисляются выражения, отталкиваясь от операторов, скобки вычисляются рекурентно
+        public string matchDecide()
         {
             Priorities bestPriority = getBestPriority(m_functionInput);
             int y;
             string perem = m_functionInput;
-            double result = calculation(bestPriority, perem);
+            string result = calculation(bestPriority, perem, false);
             return result;
         }
-
+        //я ебу нахуй ты это сунул
         public double getY(double x)
         {
             //пока что возвращает просто значение вычислений в дальнейшем будем выдавать решения, работа с неравенствами в другом классе
             //I don't understand chto делать, т.к. рклизовывать на калькулятор график функции? - не трогай просто работай с этим из другого класса где ты рисуешь
-            return matchDecide();
+            return Convert.ToDouble(matchDecide());
         }
     }
 }

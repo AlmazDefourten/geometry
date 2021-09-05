@@ -17,8 +17,8 @@ namespace geometry
         errorPriority,
         maxPriority
     }
-    class PrioritiesOper 
-    {        
+    class PrioritiesOper
+    {
         private Priorities getPriority(char input, bool binary = true)
         {
             if (input == 'c' || input == 's' || input == 't' || input == 'g') { return Priorities.funcArgument; }// g - котангенс
@@ -30,7 +30,8 @@ namespace geometry
 
             return Priorities.errorPriority;
         }
-        private Priorities getBestPriority(string input, bool isBinary = true)
+        //вычисляет уровень приоритета символа-оператора
+        protected Priorities getBestPriority(string input, bool isBinary = true)
         {
             Priorities bestPriority = Priorities.maxPriority;
             for (int i = 0; i < input.Length; i++)
@@ -40,11 +41,6 @@ namespace geometry
                 if (priority < bestPriority) { bestPriority = priority; }
             }
             return bestPriority;
-        }
-
-        void dsd()
-        {
-            
         }
 
     }
