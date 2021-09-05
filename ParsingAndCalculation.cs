@@ -11,57 +11,7 @@ namespace geometry
         public string m_functionInput;
         private int startIndex = 0;
         private int endIndex = 0;
-
-        
-        public FunctionParsing(string functionInput) { m_functionInput = functionInput; }
-
-        
-        private static bool isNumber(char input)
-        {
-            if (input == '0' || input == '1' || input == '2' || input == '3' || input == '4' || input == '5'
-                || input == '6' || input == '7' || input == '8' || input == '9' || input == '.') { return true; }
-            else { return false; }
-        }
-        private Priorities getPriority(char input, bool binary = true)
-        {
-            if (input == 'c' || input == 's' || input == 't' || input == 'g') { return Priorities.funcArgument; }// g - котангенс
-            else if (input == '^') { return Priorities.exponentiation; }
-            else if (input == '(') { return Priorities.brackets; }
-            else if (input == '*' || input == '/') { return Priorities.dividingAndMultiplication; }
-            else if (input == '+' || ((input == '-') && (binary == true))) { return Priorities.minusAndPlus; }
-            else if (isNumber(input)) { return Priorities.number; }
-            
-            return Priorities.errorPriority;
-        }
-        private Priorities getBestPriority(string input, bool isBinary = true)
-        {
-            Priorities bestPriority = Priorities.maxPriority;
-            for (int i = 0; i < input.Length; i++)
-            {
-                Priorities priority;
-                priority = getPriority(input[i], isBinary);
-                if (priority < bestPriority) { bestPriority = priority; }
-            }
-            return bestPriority;
-        }
-
-        public static string ReverseString(string s)
-        {
-            char[] arr = s.ToCharArray();
-            Array.Reverse(arr);
-            return new string(arr);
-        }
-
-        
-        private bool isOperator(char input)
-        {
-            if (input == '*' || input == '/' || input == '-' || input == '+' || input == '^')
-            {
-                return true;
-            }
-            return false;
-        }
-
+        public ParsingAndCalculation(string functionInput) { m_functionInput = functionInput; }
         private string getLeftOperand(string input, int indexOfOperand)
         {
             indexOfOperand--;
