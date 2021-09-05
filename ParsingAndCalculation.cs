@@ -147,7 +147,7 @@ namespace geometry
                         double result = Math.Pow(leftOperand, rightOperand);
                         input = input.Remove(startIndex, endIndex - startIndex + 1);
                         input = input.Insert(startIndex, result.ToString());
-                        inpLen = input.Length;
+                        inpLen = input.Length; //dd
                     }
                 }
                 bestPriority = getBestPriority(input);
