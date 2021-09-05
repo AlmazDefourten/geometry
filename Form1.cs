@@ -21,19 +21,10 @@ namespace geometry
             }
             else
             {
-                try
-                {
                     string textBoxInput = textBox1.Text;
                     ParsingAndCalculation parserObject = new ParsingAndCalculation(textBoxInput);
                     string result = parserObject.matchDecide();
                     MessageBox.Show(result.ToString());
-                }
-                catch (Exception)
-                {
-                    System.Windows.Forms.MessageBox.Show("Critical error.dw");
-                    textBox1.Text = null;
-
-                }
             }
         }
 

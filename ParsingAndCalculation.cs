@@ -78,11 +78,11 @@ namespace geometry
             }
             else if (firstIndexOfDividingFirst < 0 && firstIndexOfDividingSecond > 0)
             {
-                firstFraction = firstFraction.Replace("q", "");
                 firstDenominator = "1";
                 firstNumerator = firstFraction;
                 secondNumerator = getLeftOperand(secondFraction, firstIndexOfDividingSecond);
                 secondDenominator = getRightOperand(secondFraction, firstIndexOfDividingSecond);
+                firstFraction = firstFraction.Replace("q", "");
             }
             else
             {
@@ -152,7 +152,7 @@ namespace geometry
                 }
                 bestPriority = getBestPriority(input);
             }
-            while (bestPriority == Priorities.dividingAndMultiplication)
+            while (bestPriority == Priorities.dividing)
             {
                 
                 char operat = 'q';
@@ -164,40 +164,73 @@ namespace geometry
                         operat = input[i];
                         string leftOp = getLeftOperand(input, i);
                         string rightOp = getRightOperand(input, i);
-                        if (getFirstIndexOfDividing(ref leftOp) > 0 || getFirstIndexOfDividing(ref rightOp) > 0)
-                        {
-                            string result = multiplyingFractions(leftOp, rightOp);
-                        }
-                        double leftOperand = Convert.ToDouble(leftOp);
-                        double rightOperand = Convert.ToDouble(rightOp);
-                        if (operat == '*')
-                        {
-                            double result = leftOperand * rightOperand;
-                            input = input.Remove(startIndex, endIndex - startIndex + 1);
-                            input = input.Insert(startIndex, result.ToString());
-                        }
-                        else if (operat == '/') {
-                            double result = 0;
-                            int thisGcd = gcd(Convert.ToInt32(leftOperand), Convert.ToInt32(rightOperand));
-                                if (thisGcd == rightOperand || isExplicit == true)
+                        string strResult = "";
+                        double dblResult = -1;
+                        double leftOperand = 999, rightOperand = 999;
+                        if (operat == '/') {
+                                if (isExplicit == true)
                                 {
-                                    result = leftOperand / rightOperand;
+                                    dblResult = leftOperand / rightOperand;
                                     input = input.Remove(startIndex, endIndex - startIndex + 1);
-                                    input = input.Insert(startIndex, result.ToString());
+                                    input = input.Insert(startIndex, dblResult.ToString());
                                 }
                                 else
                                 {
                                     input = input.Remove(i, 1);
                                     input = input.Insert(i, "b");
-                                    string res = leftOperand/thisGcd + "b" + rightOperand/thisGcd;
+                                    leftOperand = Convert.ToDouble(leftOp);
+                                    rightOperand = Convert.ToDouble(rightOp);
+                                int thisGcd = gcd(Convert.ToInt32(leftOperand), Convert.ToInt32(rightOperand));
+                                string res = (leftOperand/thisGcd).ToString() + "b" + (rightOperand/thisGcd).ToString();
                                     input = input.Remove(startIndex, endIndex - startIndex + 1);
                                     input = input.Insert(startIndex, res.ToString());
                                 }
-                            }
+                        }
                         inpLen = input.Length;
                     }
                 }
                 
+                bestPriority = getBestPriority(input);
+            }
+            while (bestPriority == Priorities.multiplication)
+            {
+                char operat = 'q';
+                int inpLen = input.Length;
+                for (int i = 0; i < inpLen; i++)
+                {
+                    if (isOperator(input[i]))
+                    {
+                        operat = input[i];
+                        string leftOp = getLeftOperand(input, i);
+                        string rightOp = getRightOperand(input, i);
+                        string strResult = "";
+                        double dblResult = -1;
+                        double leftOperand = 999, rightOperand = 999;
+
+                        if (operat == '*')
+                        {
+                            if (getFirstIndexOfDividing(ref leftOp) > 0 || getFirstIndexOfDividing(ref rightOp) > 0)
+                            {
+                                strResult = multiplyingFractions(leftOp, rightOp);
+                                leftOp = getLeftOperand(input, i);  // do nothing, only changes a startIndex value
+                                rightOp = getRightOperand(input, i); // do nothing, only changes a endIndex value
+                                input = input.Remove(startIndex, endIndex - startIndex + 1);
+                                input = input.Insert(startIndex, strResult.ToString());
+                            }
+                            else
+                            {
+                                leftOperand = Convert.ToDouble(leftOp);
+                                rightOperand = Convert.ToDouble(rightOp);
+                                dblResult = leftOperand * rightOperand;
+                                input = input.Remove(startIndex, endIndex - startIndex + 1);
+                                input = input.Insert(startIndex, dblResult.ToString());
+                            }
+                        }
+                        inpLen = input.Length;
+                    }
+                    Debug.WriteLine(input + " input in end of mul");
+                }
+
                 bestPriority = getBestPriority(input);
             }
             while (bestPriority == Priorities.minusAndPlus)
@@ -236,7 +269,8 @@ namespace geometry
                     {
                         isBinary = false;
                     }
-                }                bestPriority = getBestPriority(input, isBinary);
+                }                
+                bestPriority = getBestPriority(input, isBinary);
             }
             if (bestPriority == Priorities.number)
             {

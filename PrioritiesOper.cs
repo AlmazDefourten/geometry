@@ -14,7 +14,8 @@ namespace geometry
             brackets,
             funcArgument,
             exponentiation,
-            dividingAndMultiplication,
+            dividing,
+            multiplication,
             minusAndPlus,
             number,
             errorPriority,
@@ -26,7 +27,8 @@ namespace geometry
             if (input == 'c' || input == 's' || input == 't' || input == 'g') { return Priorities.funcArgument; }// g - котангенс
             else if (input == '^') { return Priorities.exponentiation; }
             else if (input == '(') { return Priorities.brackets; }
-            else if (input == '*' || input == '/') { return Priorities.dividingAndMultiplication; }
+            else if (input == '/') { return Priorities.dividing; }
+            else if (input == '*') { return Priorities.multiplication; }
             else if (input == '+' || ((input == '-') && (binary == true))) { return Priorities.minusAndPlus; }
             else if (isNumber(input)) { return Priorities.number; }
 
