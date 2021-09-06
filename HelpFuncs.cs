@@ -52,6 +52,18 @@ namespace geometry
             }
             return false;
         }
+        protected bool isStrHaveOperators(ref string input)
+        {
+            int inpLen = input.Length;
+            for (int i = 0; i < inpLen; i++)
+            {
+                if (isOperator(input[i]))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         //проверяет, является ли данный символ оператором
         /*void simplifyingTheFraction(ref string input)
         {
