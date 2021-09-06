@@ -79,15 +79,16 @@ namespace geometry
             else if (firstIndexOfDividingFirst < 0 && firstIndexOfDividingSecond > 0)
             {
                 firstDenominator = "1";
+                firstFraction = firstFraction.Replace("q", "");
                 firstNumerator = firstFraction;
                 secondNumerator = getLeftOperand(secondFraction, firstIndexOfDividingSecond);
                 secondDenominator = getRightOperand(secondFraction, firstIndexOfDividingSecond);
-                firstFraction = firstFraction.Replace("q", "");
             }
             else
             {
                 Debug.WriteLine("Error! in multiolyingFractions func.");
             }
+            Debug.WriteLine(firstNumerator + " fn");
             string resultNumerator = (Convert.ToInt32(firstNumerator) * Convert.ToInt32(secondNumerator)).ToString();
             string resultDenomerator = (Convert.ToInt32(firstDenominator) * Convert.ToInt32(secondDenominator)).ToString();
             return resultNumerator + "/" + resultDenomerator;
