@@ -54,6 +54,42 @@ namespace geometry
             }
             return operand;
         }
+        string dividingFractions(string firstFraction, string secondFraction)
+        {
+            string firstNumerator = "", secondNumerator = "", firstDenominator = "", secondDenominator = "";
+            int firstIndexOfDividingFirst = getFirstIndexOfDividing(ref firstFraction);
+            int firstIndexOfDividingSecond = getFirstIndexOfDividing(ref secondFraction);
+            if (firstIndexOfDividingFirst > 0 && firstIndexOfDividingSecond > 0)
+            {
+                firstNumerator = getLeftOperand(firstFraction, firstIndexOfDividingFirst);
+                firstDenominator = getRightOperand(firstFraction, firstIndexOfDividingFirst);
+                secondNumerator = getLeftOperand(secondFraction, firstIndexOfDividingSecond);
+                secondDenominator = getRightOperand(secondFraction, firstIndexOfDividingSecond);
+            }
+            else if (firstIndexOfDividingFirst > 0 && firstIndexOfDividingSecond < 0)
+            {
+                firstNumerator = getLeftOperand(firstFraction, firstIndexOfDividingFirst);
+                firstDenominator = getRightOperand(firstFraction, firstIndexOfDividingFirst);
+                secondFraction = secondFraction.Replace("q", "");
+                secondNumerator = secondFraction;
+                secondDenominator = "1";
+            }
+            else if (firstIndexOfDividingFirst < 0 && firstIndexOfDividingSecond > 0)
+            {
+                firstDenominator = "1";
+                firstFraction = firstFraction.Replace("q", "");
+                firstNumerator = firstFraction;
+                secondNumerator = getLeftOperand(secondFraction, firstIndexOfDividingSecond);
+                secondDenominator = getRightOperand(secondFraction, firstIndexOfDividingSecond);
+            }
+            else
+            {
+                Debug.WriteLine("Error! in dividingFractions func.");
+            }
+            string resultNumerator = (Convert.ToInt32(firstNumerator) * Convert.ToInt32(secondDenominator)).ToString();
+            string resultDenominator = (Convert.ToInt32(firstDenominator) * Convert.ToInt32(secondNumerator)).ToString();
+            return resultNumerator + "/" + resultDenominator;
+        }
         string multiplyingFractions(string firstFraction, string secondFraction)
         {
             string firstNumerator = "", secondNumerator = "", firstDenominator = "", secondDenominator = "";
@@ -108,7 +144,7 @@ namespace geometry
                     int indexOfFirstBracket = input.LastIndexOf('(');
                     int indexOfSecondBracket = input.LastIndexOf(")");
                     string newString = input.Substring(indexOfFirstBracket + 1, indexOfSecondBracket - indexOfFirstBracket - 1);
-                    string znachenie = calculation(getBestPriority(newString), newString);
+                    string znachenie = calculation(getBestPriority(newString), newString, false);
                     input = input.Remove(indexOfFirstBracket, indexOfSecondBracket - indexOfFirstBracket + 1);
                     input = input.Insert(indexOfFirstBracket, znachenie.ToString());
                     bestPriority = getBestPriority(input);
@@ -175,6 +211,7 @@ namespace geometry
                                 leftOperand = Convert.ToDouble(leftOp);
                                 rightOperand = Convert.ToDouble(rightOp);
                                 int thisGcd = gcd(Convert.ToInt32(leftOperand), Convert.ToInt32(rightOperand));
+                                Debug.WriteLine(input + " this!");
                                 if (isExplicit == true || thisGcd % rightOperand == 0)
                                 {
                                     dblResult = leftOperand / rightOperand;
