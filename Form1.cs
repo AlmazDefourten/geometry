@@ -24,6 +24,7 @@ namespace geometry
                     string textBoxInput = textBox1.Text;
                     ParsingAndCalculation parserObject = new ParsingAndCalculation(textBoxInput);
                     string result = parserObject.matchDecide();
+                    result = result.Replace("b", "/");
                     MessageBox.Show(result.ToString());
             }
         }
