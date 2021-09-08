@@ -35,7 +35,7 @@ namespace geometry
             return Priorities.errorPriority;
         }
         //вычисляет уровень приоритета символа-оператора
-        protected Priorities getBestPriority(string input, bool isBinary = true)
+        protected Priorities getBestPriority(ref string input, bool isBinary = true)
         {
             Priorities bestPriority = Priorities.maxPriority;
             for (int i = 0; i < input.Length; i++)

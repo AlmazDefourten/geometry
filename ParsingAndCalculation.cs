@@ -12,7 +12,7 @@ namespace geometry
         private int startIndex = 0;
         private int endIndex = 0;
         public ParsingAndCalculation(string functionInput) { m_functionInput = functionInput; }
-        private string getLeftOperand(string input, int indexOfOperand)
+        private string getLeftOperand(ref string input, int indexOfOperand)
         {
             indexOfOperand--;
             string operand = "";
@@ -33,7 +33,7 @@ namespace geometry
             return operand;
         }
         //возвращает левое от оператора число в входящей строке
-        private string getRightOperand(string input, int indexOfOperand)
+        private string getRightOperand(ref string input, int indexOfOperand)
         {
             indexOfOperand++;
             string operand = "";
@@ -65,15 +65,15 @@ namespace geometry
             int firstIndexOfDividingSecond = getFirstIndexOfDividing(ref secondFraction);
             if (firstIndexOfDividingFirst > 0 && firstIndexOfDividingSecond > 0)
             {
-                firstNumerator = getLeftOperand(firstFraction, firstIndexOfDividingFirst);
-                firstDenominator = getRightOperand(firstFraction, firstIndexOfDividingFirst);
-                secondNumerator = getLeftOperand(secondFraction, firstIndexOfDividingSecond);
-                secondDenominator = getRightOperand(secondFraction, firstIndexOfDividingSecond);
+                firstNumerator = getLeftOperand(ref firstFraction, firstIndexOfDividingFirst);
+                firstDenominator = getRightOperand(ref firstFraction, firstIndexOfDividingFirst);
+                secondNumerator = getLeftOperand(ref secondFraction, firstIndexOfDividingSecond);
+                secondDenominator = getRightOperand(ref secondFraction, firstIndexOfDividingSecond);
             }
             else if (firstIndexOfDividingFirst > 0 && firstIndexOfDividingSecond < 0)
             {
-                firstNumerator = getLeftOperand(firstFraction, firstIndexOfDividingFirst);
-                firstDenominator = getRightOperand(firstFraction, firstIndexOfDividingFirst);
+                firstNumerator = getLeftOperand(ref firstFraction, firstIndexOfDividingFirst);
+                firstDenominator = getRightOperand(ref firstFraction, firstIndexOfDividingFirst);
                 secondFraction = secondFraction.Replace("q", "");
                 secondNumerator = secondFraction;
                 secondDenominator = "1";
@@ -83,8 +83,8 @@ namespace geometry
                 firstDenominator = "1";
                 firstFraction = firstFraction.Replace("q", "");
                 firstNumerator = firstFraction;
-                secondNumerator = getLeftOperand(secondFraction, firstIndexOfDividingSecond);
-                secondDenominator = getRightOperand(secondFraction, firstIndexOfDividingSecond);
+                secondNumerator = getLeftOperand(ref secondFraction, firstIndexOfDividingSecond);
+                secondDenominator = getRightOperand(ref secondFraction, firstIndexOfDividingSecond);
             }
             else
             {
@@ -105,15 +105,15 @@ namespace geometry
             int firstIndexOfDividingSecond = getFirstIndexOfDividing(ref secondFraction);
             if (firstIndexOfDividingFirst > 0 && firstIndexOfDividingSecond > 0)
             {
-                firstNumerator = getLeftOperand(firstFraction, firstIndexOfDividingFirst);
-                firstDenominator = getRightOperand(firstFraction, firstIndexOfDividingFirst);
-                secondNumerator = getLeftOperand(secondFraction, firstIndexOfDividingSecond);
-                secondDenominator = getRightOperand(secondFraction, firstIndexOfDividingSecond);
+                firstNumerator = getLeftOperand(ref firstFraction, firstIndexOfDividingFirst);
+                firstDenominator = getRightOperand(ref firstFraction, firstIndexOfDividingFirst);
+                secondNumerator = getLeftOperand(ref secondFraction, firstIndexOfDividingSecond);
+                secondDenominator = getRightOperand(ref secondFraction, firstIndexOfDividingSecond);
             }
             else if (firstIndexOfDividingFirst > 0 && firstIndexOfDividingSecond < 0)
             {
-                firstNumerator = getLeftOperand(firstFraction, firstIndexOfDividingFirst);
-                firstDenominator = getRightOperand(firstFraction, firstIndexOfDividingFirst);
+                firstNumerator = getLeftOperand(ref firstFraction, firstIndexOfDividingFirst);
+                firstDenominator = getRightOperand(ref firstFraction, firstIndexOfDividingFirst);
                 secondFraction = secondFraction.Replace("q", "");
                 secondNumerator = secondFraction;
                 secondDenominator = "1";
@@ -123,8 +123,8 @@ namespace geometry
                 firstDenominator = "1";
                 firstFraction = firstFraction.Replace("q", "");
                 firstNumerator = firstFraction;
-                secondNumerator = getLeftOperand(secondFraction, firstIndexOfDividingSecond);
-                secondDenominator = getRightOperand(secondFraction, firstIndexOfDividingSecond);
+                secondNumerator = getLeftOperand(ref secondFraction, firstIndexOfDividingSecond);
+                secondDenominator = getRightOperand(ref secondFraction, firstIndexOfDividingSecond);
             }
             else
             {
@@ -148,10 +148,10 @@ namespace geometry
                     int indexOfFirstBracket = input.LastIndexOf('(');
                     int indexOfSecondBracket = input.LastIndexOf(")");
                     string newString = input.Substring(indexOfFirstBracket + 1, indexOfSecondBracket - indexOfFirstBracket - 1);
-                    string znachenie = calculation(getBestPriority(newString), newString, false);
+                    string znachenie = calculation(getBestPriority(ref newString), newString, false);
                     input = input.Remove(indexOfFirstBracket, indexOfSecondBracket - indexOfFirstBracket + 1);
                     input = input.Insert(indexOfFirstBracket, znachenie.ToString());
-                    bestPriority = getBestPriority(input);
+                    bestPriority = getBestPriority(ref input);
                 }
                 while (bestPriority == Priorities.funcArgument)
                 {
@@ -164,7 +164,7 @@ namespace geometry
                             double rightOperand;
                             char oper = ' ';
                             double result = 0;
-                            rightOperand = Convert.ToDouble(getRightOperand(input, i));
+                            rightOperand = Convert.ToDouble(getRightOperand(ref input, i));
                             oper = input[i];
                             if (oper == 's') { result = Math.Sin(rightOperand); }
                             else if (oper == 'c') { result = Math.Cos(rightOperand); }
@@ -175,7 +175,7 @@ namespace geometry
                             inpLen = input.Length;
                         }
                     }
-                    bestPriority = getBestPriority(input);
+                    bestPriority = getBestPriority(ref input);
                 }
                 while (bestPriority == Priorities.exponentiation)
                 {
@@ -186,15 +186,15 @@ namespace geometry
                         if (input[i] == '^')
                         {
                             operat = input[i];
-                            double leftOperand = Convert.ToDouble(getLeftOperand(input, i));
-                            double rightOperand = Convert.ToDouble(getRightOperand(input, i));
+                            double leftOperand = Convert.ToDouble(getLeftOperand(ref input, i));
+                            double rightOperand = Convert.ToDouble(getRightOperand(ref input, i));
                             double result = Math.Pow(leftOperand, rightOperand);
                             input = input.Remove(startIndex, endIndex - startIndex + 1);
                             input = input.Insert(startIndex, result.ToString());
                             inpLen = input.Length; //dd
                         }
                     }
-                    bestPriority = getBestPriority(input);
+                    bestPriority = getBestPriority(ref input);
                 }
                 while (bestPriority == Priorities.dividing)
                 {
@@ -205,8 +205,8 @@ namespace geometry
                         if (isOperator(input[i]))
                         {
                             operat = input[i];
-                            string leftOp = getLeftOperand(input, i);
-                            string rightOp = getRightOperand(input, i);
+                            string leftOp = getLeftOperand(ref input, i);
+                            string rightOp = getRightOperand(ref input, i);
                             double dblResult = -1;
                             double leftOperand = 999, rightOperand = 999;
                             if (operat == '/')
@@ -214,8 +214,8 @@ namespace geometry
                                 if (getFirstIndexOfDividing(ref leftOp) > 0 || getFirstIndexOfDividing(ref rightOp) > 0)
                                 {
                                     string strResult = dividingFractions(leftOp, rightOp);
-                                    leftOp = getLeftOperand(input, i);  // do nothing, only changes a startIndex value
-                                    rightOp = getRightOperand(input, i); // do nothing, only changes a endIndex value
+                                    leftOp = getLeftOperand(ref input, i);  // do nothing, only changes a startIndex value
+                                    rightOp = getRightOperand(ref input, i); // do nothing, only changes a endIndex value
                                     input = input.Remove(startIndex, endIndex - startIndex + 1);
                                     input = input.Insert(startIndex, strResult.ToString());
                                 }
@@ -246,7 +246,7 @@ namespace geometry
                         }
                     }
 
-                    bestPriority = getBestPriority(input);
+                    bestPriority = getBestPriority(ref input);
                 }
                 while (bestPriority == Priorities.multiplication)
                 {
@@ -257,8 +257,8 @@ namespace geometry
                         if (isOperator(input[i]))
                         {
                             operat = input[i];
-                            string leftOp = getLeftOperand(input, i);
-                            string rightOp = getRightOperand(input, i);
+                            string leftOp = getLeftOperand(ref input, i);
+                            string rightOp = getRightOperand(ref input, i);
                             string strResult = "";
                             double dblResult = -1;
                             double leftOperand = 999, rightOperand = 999;
@@ -267,8 +267,8 @@ namespace geometry
                                 if (getFirstIndexOfDividing(ref leftOp) > 0 || getFirstIndexOfDividing(ref rightOp) > 0)
                                 {
                                     strResult = multiplyingFractions(leftOp, rightOp);
-                                    leftOp = getLeftOperand(input, i);  // do nothing, only changes a startIndex value
-                                    rightOp = getRightOperand(input, i); // do nothing, only changes a endIndex value
+                                    leftOp = getLeftOperand(ref input, i);  // do nothing, only changes a startIndex value
+                                    rightOp = getRightOperand(ref input, i); // do nothing, only changes a endIndex value
                                     input = input.Remove(startIndex, endIndex - startIndex + 1);
                                     input = input.Insert(startIndex, strResult.ToString());
                                 }
@@ -285,7 +285,7 @@ namespace geometry
                         }
                     }
 
-                    bestPriority = getBestPriority(input);
+                    bestPriority = getBestPriority(ref input);
                 }
 
                 while (bestPriority == Priorities.minusAndPlus)
@@ -302,8 +302,8 @@ namespace geometry
                             {
                                 break;
                             }
-                            double leftOperand = Convert.ToDouble(getLeftOperand(input, i));
-                            double rightOperand = Convert.ToDouble(getRightOperand(input, i));
+                            double leftOperand = Convert.ToDouble(getLeftOperand(ref input, i));
+                            double rightOperand = Convert.ToDouble(getRightOperand(ref input, i));
                             if (operat == '+')
                             {
                                 double result = leftOperand + rightOperand;
@@ -325,7 +325,7 @@ namespace geometry
                             isBinary = false;
                         }
                     }
-                    bestPriority = getBestPriority(input, isBinary);
+                    bestPriority = getBestPriority(ref input, isBinary);
                 }
                 if (bestPriority == Priorities.number)
                 {
@@ -339,7 +339,7 @@ namespace geometry
         //вычисления, логика: по приоритетам вычисляются выражения, отталкиваясь от операторов, скобки вычисляются рекурентно
         public string matchDecide()
         {
-            Priorities bestPriority = getBestPriority(m_functionInput);
+            Priorities bestPriority = getBestPriority(ref m_functionInput);
             int y;
             string perem = m_functionInput;
             string result = calculation(bestPriority, perem, false);
