@@ -181,17 +181,42 @@ namespace geometry
                 {
                     int inpLen = input.Length;
                     char operat = ' ';
+
                     for (int i = 0; i < inpLen; i++)
                     {
                         if (input[i] == '^')
                         {
-                            operat = input[i];
-                            double leftOperand = Convert.ToDouble(getLeftOperand(ref input, i));
-                            double rightOperand = Convert.ToDouble(getRightOperand(ref input, i));
-                            double result = Math.Pow(leftOperand, rightOperand);
-                            input = input.Remove(startIndex, endIndex - startIndex + 1);
-                            input = input.Insert(startIndex, result.ToString());
-                            inpLen = input.Length; //dd
+                            string leftOp = getLeftOperand(ref input, i);
+                            string rightOp = getRightOperand(ref input, i);
+                            if (getFirstIndexOfDividing(ref leftOp) > 0 && getFirstIndexOfDividing(ref rightOp) < 0)
+                            {
+                                Debug.WriteLine(leftOp + " - leftOp");
+                                Debug.WriteLine(rightOp + " - rightOp");
+                                leftOp = "q" + leftOp + "q";
+                                rightOp = "q" + rightOp + "q";
+                                int indexOfDividing = getFirstIndexOfDividing(ref leftOp);
+                                string numeratorOfFraction = getLeftOperand(ref leftOp, indexOfDividing);
+                                string denominatorOfFraction = getRightOperand(ref leftOp, indexOfDividing);
+                                rightOp = getRightOperand(ref input, i);
+                                Debug.WriteLine(denominatorOfFraction + " denominatorOfFraction");
+                                string numeratorOfResultFraction = (Convert.ToInt32(numeratorOfFraction) * Convert.ToInt32(numeratorOfFraction)).ToString();
+                                string denominatorOfResultFraction = (Convert.ToInt32(denominatorOfFraction) * Convert.ToInt32(denominatorOfFraction)).ToString();
+                                Debug.WriteLine(denominatorOfResultFraction + " deno of resultFraction");
+                                string result = numeratorOfResultFraction + "/" + denominatorOfResultFraction;
+                                input = input.Remove(startIndex, endIndex - startIndex + 1);
+                                input = input.Insert(startIndex, result.ToString());
+                                inpLen = input.Length;
+                            }
+                            else
+                            {
+                                operat = input[i];
+                                double leftOperand = Convert.ToDouble(leftOp);
+                                double rightOperand = Convert.ToDouble(rightOp);
+                                double result = Math.Pow(leftOperand, rightOperand);
+                                input = input.Remove(startIndex, endIndex - startIndex + 1);
+                                input = input.Insert(startIndex, result.ToString());
+                                inpLen = input.Length; //dd
+                            }
                         }
                     }
                     bestPriority = getBestPriority(ref input);
