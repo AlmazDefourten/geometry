@@ -199,8 +199,8 @@ namespace geometry
                                 string denominatorOfFraction = getRightOperand(ref leftOp, indexOfDividing);
                                 rightOp = getRightOperand(ref input, i);
                                 Debug.WriteLine(denominatorOfFraction + " denominatorOfFraction");
-                                string numeratorOfResultFraction = (Convert.ToInt32(numeratorOfFraction) * Convert.ToInt32(numeratorOfFraction)).ToString();
-                                string denominatorOfResultFraction = (Convert.ToInt32(denominatorOfFraction) * Convert.ToInt32(denominatorOfFraction)).ToString();
+                                string numeratorOfResultFraction = (Math.Pow(Convert.ToInt32(numeratorOfFraction), Convert.ToInt32(rightOp.Replace("q", "")))).ToString();
+                                string denominatorOfResultFraction = (Math.Pow(Convert.ToInt32(denominatorOfFraction), Convert.ToInt32(rightOp.Replace("q", "")))).ToString();
                                 Debug.WriteLine(denominatorOfResultFraction + " deno of resultFraction");
                                 string result = numeratorOfResultFraction + "/" + denominatorOfResultFraction;
                                 input = input.Remove(startIndex, endIndex - startIndex + 1);
